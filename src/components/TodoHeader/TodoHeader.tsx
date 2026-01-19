@@ -1,26 +1,37 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Todo } from "../../types/Todo";
+import React, { useEffect, useRef, useState } from 'react';
+import { Todo } from '../../types/Todo';
 
 type Props = {
-  onAddTodo: (title: string) => void
-  todos: Todo[]
-}
-export const TodoHeader: React.FC<Props> = ({onAddTodo, todos}) => {
+  onAddTodo: (title: string, onSuccess?: () => void) => void;
+  todos: Todo[];
+  isLoadingTodos: boolean
+};
+export const TodoHeader: React.FC<Props> = ({ onAddTodo, todos, isLoadingTodos }) => {
   const [title, setTitle] = useState('');
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
+
     setTitle(value);
   };
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    onAddTodo(title);
-    setTitle('');
+    if (!title.trim()) return;
+    onAddTodo(title, () => setTitle(''));
   };
-  const inputRef = useRef<HTMLInputElement>(null)
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
-    inputRef.current?.focus()
-  }, [])
+    inputRef.current?.focus();
+  }, []);
+  useEffect(() => {
+    if (!isLoadingTodos) {
+      inputRef.current?.focus();
+    };
+  }, [isLoadingTodos]);
+
   return (
     <header className="todoapp__header">
       {/* this button should have `active` class only if all todos are completed */}
@@ -42,8 +53,9 @@ export const TodoHeader: React.FC<Props> = ({onAddTodo, todos}) => {
           value={title}
           ref={inputRef}
           onChange={handleTitleChange}
+          disabled={isLoadingTodos}
         />
       </form>
     </header>
   );
-}
+};

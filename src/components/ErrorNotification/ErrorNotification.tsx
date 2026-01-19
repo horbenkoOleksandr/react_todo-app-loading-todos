@@ -1,24 +1,22 @@
-import React from "react";
+import React from 'react';
 
 type Props = {
-  messages: string[]
-  hidden?: boolean
-  onClose: () => void
-}
+  messages: string[];
+  hidden?: boolean;
+  onClose: () => void;
+};
 
-export const ErrorNotification: React.FC<Props> = ({messages, hidden = true, onClose}) => {
-  {
-    /* DON'T use conditional rendering to hide the notification */
-  }
-  {
-    /* Add the 'hidden' class to hide the message smoothly */
-  }
+export const ErrorNotification: React.FC<Props> = ({
+  messages,
+  hidden = true,
+  onClose,
+}) => {
   return (
     <div
       data-cy="ErrorNotification"
-      className={`notification is-danger is-light has-text-weight-normal ${hidden ? "hidden" : ""}`}
+      className={`notification is-danger is-light has-text-weight-normal ${hidden ? 'hidden' : ''}`}
     >
-      <button 
+      <button
         data-cy="HideErrorButton"
         type="button"
         className="delete"
@@ -30,15 +28,6 @@ export const ErrorNotification: React.FC<Props> = ({messages, hidden = true, onC
           <br />
         </React.Fragment>
       ))}
-      {/* Unable to load todos
-      <br />
-      Title should not be empty
-      <br />
-      Unable to add a todo
-      <br />
-      Unable to delete a todo
-      <br />
-      Unable to update a todo */}
     </div>
   );
 };

@@ -1,31 +1,45 @@
-import React from "react"
-import { TodoItem } from "../TodoItem"
-import { Todo } from "../../types/Todo"
-import { TodoLoader } from "../TodoLoader"
+import React from 'react';
+import { TodoItem } from '../TodoItem';
+import { Todo } from '../../types/Todo';
+import { FilterTodo } from '../../types/Filter';
 
 type Props = {
-    todos: Todo[]
-    isLoadingTodos: boolean
-    filter: 'All' | 'Active' | 'Сompleted'
-    onToggle: (id: number) => void
-}
-export const TodoList: React.FC<Props> = ({todos, isLoadingTodos, onToggle, filter}) => {
-    const filteredTodos = todos.filter((todo) => {
-        if (filter === 'All') return true;
-        if (filter === 'Active') return !todo.completed;
-        return todo.completed
-    })
+  todos: Todo[];
+  isLoadingTodos: boolean;
+  filter: FilterTodo;
+  onToggle: (id: number) => void;
+  onDeleteTodo: (id: number) => void;
+};
+export const TodoList: React.FC<Props> = ({
+  todos,
+  isLoadingTodos,
+  filter,
+  onToggle,
+  onDeleteTodo
+}) => {
+  const filteredTodos = todos.filter(todo => {
+    if (filter === FilterTodo.All) {
+      return true;
+    }
 
-    return (
-        <section className="todoapp__main" data-cy="TodoList">
-            {filteredTodos.map((todo) => (
-                <TodoItem 
-                  todo={todo}
-                  isLoadingTodos={isLoadingTodos}
-                  key={todo.id}
-                  onToggle={onToggle}
-                />
-            ))}
-        </section>  
-    )
-}
+    if (filter === FilterTodo.Active) {
+      return !todo.completed;
+    }
+
+    return todo.completed;
+  });
+
+  return (
+    <section className="todoapp__main" data-cy="TodoList">
+      {filteredTodos.map(todo => (
+        <TodoItem
+          key={todo.id}
+          todo={todo}
+          isLoadingTodos={isLoadingTodos}
+          onToggle={onToggle}
+          onDeleteTodo={onDeleteTodo}
+        />
+      ))}
+    </section>
+  );
+};
